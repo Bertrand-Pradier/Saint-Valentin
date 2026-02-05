@@ -418,7 +418,6 @@
             50% { opacity: 1; transform: scale(1) rotate(180deg); }
         }
 
-        /* Petals animation */
         .petal {
             position: fixed;
             width: 15px;
@@ -474,6 +473,7 @@
         const btnNon = document.getElementById('btnNon');
         let hasMovedOnce = false;
         let canMove = true;
+        let cooldownTime = 100;
 
         const nonVariations = [
             "Non", "Jamais", "Peut-être", "Tu veux vraiment pas", "Clique sur Oui 💖", 
