@@ -470,10 +470,14 @@
     </div>
 
     <script>
+        const TENTATIVES_AVANT_SPECIAL = 100;
+
         const btnNon = document.getElementById('btnNon');
+        const btnOui = document.querySelector('.btn-oui');
         let hasMovedOnce = false;
         let canMove = true;
         let cooldownTime = 100;
+        let tentatives = 0;
 
         const nonVariations = [
             "Non", "Jamais", "Peut-être", "Tu veux vraiment pas", "Clique sur Oui 💖", 
@@ -492,6 +496,14 @@
             canMove = false;
             setTimeout(() => { canMove = true; }, cooldownTime);
             
+            tentatives++;
+            
+            if (tentatives >= TENTATIVES_AVANT_SPECIAL) {
+                const bonusScale = 1 + (tentatives - TENTATIVES_AVANT_SPECIAL + 1) * 0.1;
+                btnOui.style.transform = `scale(${Math.min(bonusScale, 2)})`;
+                btnOui.style.transition = 'transform 0.3s ease';
+            }
+            
             const container = document.querySelector('.container');
             const containerRect = container.getBoundingClientRect();
             
@@ -507,11 +519,16 @@
             const btnWidth = btnNon.offsetWidth;
             const btnHeight = btnNon.offsetHeight;
             
-            const margin = 15;
-            const minX = containerRect.left + margin;
-            const minY = containerRect.top + margin;
-            const maxX = containerRect.right - btnWidth - margin;
-            const maxY = containerRect.bottom - btnHeight - margin;
+            const containerWidth = containerRect.width;
+            const containerHeight = containerRect.height;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            
+            const padding = 40;
+            const minX = centerX - (containerWidth / 2) - padding;
+            const maxX = centerX + (containerWidth / 2) + padding - btnWidth;
+            const minY = centerY - (containerHeight / 2) - padding;
+            const maxY = centerY + (containerHeight / 2) + padding - btnHeight;
             
             const x = minX + Math.random() * (maxX - minX);
             const y = minY + Math.random() * (maxY - minY);
